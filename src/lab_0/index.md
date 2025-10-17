@@ -87,7 +87,7 @@ const selectMood = view(Inputs.select(
     "Somewhat poor mood",
     "OK mood",
     "Good mood",
-    "Great mood"
+    "Amazing mood"
   ],
   { label: "Mood", value: "OK mood" }  // default selection
 ));
