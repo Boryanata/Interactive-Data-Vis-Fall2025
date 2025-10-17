@@ -71,6 +71,28 @@ I’ve tracked the following variables, which represent the columns in my datase
 <img src="assets/mood-index.png" alt="Mood Index" width="900">
 
 
+```js
+const food = view(
+  Inputs.text({
+    label: "Favorite Food",
+    placeholder: "Enter your favorite food"
+  })
+);
+```
+
+```js
+const selectMood = view(Inputs.select(
+  [
+    "Poor mood",
+    "Somewhat poor mood",
+    "OK mood",
+    "Good mood",
+    "Great mood"
+  ],
+  { label: "Mood", value: "OK mood" }  // default selection
+));
+```
+
 
 
 
