@@ -2,6 +2,7 @@
 export default {
   // The app’s title; used in the sidebar and webpage titles.
   title: "Interactive Data Visualization (Fall 2025)",
+  theme: "light",
 
   // The pages and sections in the sidebar. If you don’t specify this option,
   // all pages will be listed in alphabetical order. Listing pages explicitly
@@ -20,7 +21,9 @@ export default {
       open: false,
       pages: [
         { name: "Instructions", path: "/lab_1/readme" },
-        { name: "Dashboard", path: "/lab_1/index" },
+        { name: "Week 5 Class", path: "/lab_1/week_5" },
+        { name: "Week 6 Notes", path: "/lab_1/week_6_notes" },
+        { name: "Week 6 Class", path: "/lab_1/week_6_class" },
       ],
     },
       {
