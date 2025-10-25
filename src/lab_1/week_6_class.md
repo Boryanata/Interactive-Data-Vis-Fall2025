@@ -3,6 +3,9 @@ title: "Week 6 Class"
 toc: true
 ---
 
+The below code is from classtime Friday, Oct 24th. 
+You can find a write up about the same concepts in the [/week_6_notes](./week_6_notes) page. 
+
 ```js
 const penguins = await FileAttachment("./data/penguins.csv").csv({ typed: true })
 display(penguins) // data! yay!
