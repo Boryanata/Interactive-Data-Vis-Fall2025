@@ -32,3 +32,57 @@ Plot.plot({
   color: { legend: true }
   })
   ```
+
+  # 2. Ideal weather for pollinating 🌡️🌤️
+
+  ## Pollination activity vs temperature 🌡️
+  ```js
+  Plot.plot({
+  title: "Pollination Activity vs Temperature",
+  marks: [
+    Plot.ruleY([0]),
+    Plot.dot(pollinators, {
+      x: "temperature",
+      y: "visit_count",
+      stroke: "pollinator_species",
+      fill: "pollinator_species",
+      r: 4
+    }),
+    Plot.lineY(
+      Plot.groupX(
+        {y: "mean"},
+        {
+          x: "temperature",
+          y: "visit_count",
+          stroke: "pollinator_species"
+        }
+      )
+    )
+  ],
+  x: {label: "Temperature (°C)"},
+  y: {label: "Pollination Activity (visit count)"},
+  color: {legend: true}
+})
+  ```
+
+  ## Pollination activity by weather condition 🌤️
+  ```js
+  Plot.plot({
+  title: "Pollination Activity by Weather Condition",
+  marks: [
+    Plot.barY(
+      Plot.groupX(
+        {y: "mean"},
+        {
+          x: "weather_condition",
+          y: "visit_count",
+          fill: "weather_condition"
+        }
+      )
+    )
+  ],
+  x: {label: "Weather Condition"},
+  y: {label: "Average Visit Count"},
+  color: {legend: false}
+})
+  ```
