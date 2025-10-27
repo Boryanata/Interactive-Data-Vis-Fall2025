@@ -21,9 +21,9 @@ Plot.plot({
     Plot.dot(pollinators, {
       x: "avg_body_mass_g",
       y: "avg_wing_span_mm",
-      stroke: "polloinator_species", // color by species
-      fill: "polloinator_species",
-      title: "polloinator_species",
+      stroke: "pollinator_species", // color by species
+      fill: "pollinator_species",
+      title: "pollinator_species",
       r: 4
     })
   ],
@@ -32,18 +32,3 @@ Plot.plot({
   color: { legend: true }
   })
   ```
-
-//     Plot.dot(pollinators, {
-//       x: "avg_body_mass_g",
-//       y: "avg_wing_span_mm",
-//       stroke: "polloinator_species",
-//       title: "pollinator_species",
-//       r: 4
-//     }),
-//     Plot.linearRegressionY(pollinators, {x: "avg_body_mass_g", y: "avg_wing_span_mm"})
-//   ],
-//   x: {label: "Body Mass (g)"},
-//   y: {label: "Wing Span (mm)"},
-//   color: {legend: true}
-// })
-```
