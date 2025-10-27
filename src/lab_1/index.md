@@ -16,14 +16,14 @@ Inputs.table(pollinators)
 ```js
 Plot.plot({
   marks: [
-    Plot.dot(data, {
+    Plot.dot(pollinators, {
       x: "Body_mass",
       y: "Wing_span",
       stroke: "Species",
       title: "Species",
       r: 4
     }),
-    Plot.linearRegressionY(data, {x: "Body_mass", y: "Wing_span"})
+    Plot.linearRegressionY(pollinators, {x: "Body_mass", y: "Wing_span"})
   ],
   x: {label: "Body Mass (g)"},
   y: {label: "Wing Span (cm)"},
