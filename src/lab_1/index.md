@@ -38,7 +38,6 @@ Plot.plot({
   ## Pollination activity vs temperature 🌡️
   ```js
   Plot.plot({
-  title: "Pollination Activity vs Temperature",
   marks: [
     Plot.ruleY([0]),
     Plot.dot(pollinators, {
@@ -68,15 +67,16 @@ Plot.plot({
   ## Pollination activity by weather condition 🌤️
   ```js
   Plot.plot({
-  title: "Pollination Activity by Weather Condition",
   marks: [
     Plot.barY(
+      pollinators,
       Plot.groupX(
         {y: "mean"},
         {
           x: "weather_condition",
           y: "visit_count",
           fill: "weather_condition"
+          sort: { x: "y", reverse: true }
         }
       )
     )
