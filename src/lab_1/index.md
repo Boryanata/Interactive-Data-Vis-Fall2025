@@ -33,7 +33,9 @@ Plot.plot({
   })
   ```
 
-  # 2. Ideal weather for pollinating 🌡️🌤️
+
+  # 2. Ideal weather for pollinating 
+
 
   ## Pollination activity vs temperature 🌡️
   ```js
@@ -43,8 +45,38 @@ Plot.plot({
     Plot.dot(pollinators, {
       x: "temperature",
       y: "visit_count",
+      fill: "weather_condition",
+      stroke: "weather_condition",
+      title: "weather_condition",
+      r: 4
+    }),
+   
+    Plot.lineY(
+      pollinators,
+      Plot.groupX(
+        { y: "mean" },
+        {
+          x: "temperature",
+          y: "visit_count",
+          stroke: "weather_condition"
+        }
+      )
+    )
+  ],
+  x: { label: "Temperature (°C)" },
+  y: { label: "Pollination Activity (visit count)" },
+  color: { legend: true }
+})
+  ```
+  <!-- ```js
+  Plot.plot({
+  marks: [
+    Plot.ruleY([0]),
+    Plot.dot(pollinators, {
+      x: "temperature",
+      y: "visit_count",
       stroke: "pollinator_species",
-      fill: "pollinator_species",
+      fill: "pollinator_species", //this is our obstract value z
       r: 4
     }),
     Plot.lineY(
@@ -62,7 +94,8 @@ Plot.plot({
   y: {label: "Pollination Activity (visit count)"},
   color: {legend: true}
 })
-  ```
+  ``` -->
+
 
   ## Pollination activity by weather condition 🌤️
   ```js
@@ -75,7 +108,7 @@ Plot.plot({
         {
           x: "weather_condition",
           y: "visit_count",
-          fill: "weather_condition"
+          fill: "weather_condition",
           sort: { x: "y", reverse: true }
         }
       )
