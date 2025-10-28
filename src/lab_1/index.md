@@ -6,7 +6,7 @@ toc: true
 ```js
 const pollinators = FileAttachment("./data/pollinator_activity_data.csv").csv({ typed: true })
 ```
-# Preview of Our Data
+# Preview of Data
 ```js
 Inputs.table(pollinators)
 ```
@@ -21,6 +21,8 @@ This interactive dashboard explores new pollination data collected from a local 
 # 1. Body mass and wing span distribution per species
 
 This chart compares the body mass and wing span of each pollinator species. It shows how the three species differ in size and form — highlighting which are larger and stronger flyers versus smaller, lighter pollinators.
+
+<br><br>
 
 ```js
 Plot.plot({
@@ -98,8 +100,10 @@ Plot.plot({
   ```
   <br><br>
 
-  ## 3. Nectar production 🐝🌸🍯 
+  # 3. Nectar production 🐝🌸🍯 
   The following visualization shows the distribution of nectar production for each flower species. Each box shows the distribution of nectar production per flower - higher medians and taller boxes indicate greater typical output and variation.
+
+  <br><br>
 
   ```js
   Plot.plot({
@@ -118,3 +122,9 @@ Plot.plot({
   height: 350
 })
   ```
+  <br><br>
+
+  Bees are most active in warm, clear conditions, with pollination rates peaking at moderate temperatures and dropping during cooler or cloudy weather. These patterns suggest that sunny, mild days provide the most favorable environment for pollination on the farm.
+
+  🐝🐝🐝
+
