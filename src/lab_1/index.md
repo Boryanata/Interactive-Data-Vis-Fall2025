@@ -42,8 +42,8 @@ Plot.plot({
 
   ```js
   Plot.plot({
-  title: "Pollination Activity vs Temperature 🌡️",
   marks: [
+    Plot.frame(),
     Plot.ruleY([0]),
     Plot.barY(
       pollinators,
@@ -97,6 +97,7 @@ Plot.plot({
   ```js
   Plot.plot({
   marks: [
+    Plot.frame(),
     Plot.barY(
       pollinators,
       Plot.groupX(
