@@ -37,15 +37,15 @@ Plot.plot({
   # 2. Ideal weather for pollinating 
 
 
-  ## Pollination activity vs temperature 🌡️
+  ## Pollination activity vs weather condition 🌡️
   ```js
   Plot.plot({
   marks: [
     Plot.ruleY([0]),
     Plot.dot(pollinators, {
-      x: "temperature",
+      x: "weather_condition",
       y: "visit_count",
-      fill: "weather_condition",
+      fill: "weather_condition", //color by weather condition
       stroke: "weather_condition",
       title: "weather_condition",
       r: 4
