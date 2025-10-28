@@ -11,12 +11,16 @@ const pollinators = FileAttachment("./data/pollinator_activity_data.csv").csv({ 
 Inputs.table(pollinators)
 ```
 
+<br><br>
+
 # 🐝🌸🍯 Pollination Patterns: Insights from a Local Farm’s Bee Observations
+
+This interactive dashboard explores new pollination data collected from a local farm. It visualizes how three bee species differ in body mass and wing span, reveals the weather and temperature conditions that support the most pollination activity, and highlights which flowers produce the most nectar. Together, these insights help identify the factors that make pollination most successful — from the bees’ physical traits to the flowers and the weather that sustain them.
 <br><br>
 
 # 1. Body mass and wing span distribution per species
 
-<br><br>
+This chart compares the body mass and wing span of each pollinator species. It shows how the three species differ in size and form — highlighting which are larger and stronger flyers versus smaller, lighter pollinators.
 
 ```js
 Plot.plot({
@@ -40,6 +44,7 @@ Plot.plot({
 <br><br>
 
   # 2. Ideal weather for pollinating 
+  This visualization shows how pollination activity changes with temperature and weather conditions. It highlights the temperatures and weather types where bees are most active, revealing the environmental sweet spot for pollination.
 
 <br><br>
 
@@ -86,13 +91,16 @@ Plot.plot({
       )
     )
   ],
-  x: {label: "Weather Condition"},
+  x: {label: "**Weather Condition**"},
   y: {label: "Average Visit Count"},
   color: {legend: false}
 })
   ```
+  <br><br>
 
   ## 3. Nectar production 🐝🌸🍯 
+  The following visualization shows the distribution of nectar production for each flower species. Each box shows the distribution of nectar production per flower - higher medians and taller boxes indicate greater typical output and variation.
+
   ```js
   Plot.plot({
   marks: [
@@ -105,7 +113,7 @@ Plot.plot({
     })
   ],
   color: { legend: false },
-  x: { label: "Flower Species" },
+  x: { label: "**Flower Species**" },
   y: { label: "Nectar Production (µL)", grid: true },
   height: 350
 })
