@@ -6,12 +6,15 @@ toc: true
 ```js
 const pollinators = FileAttachment("./data/pollinator_activity_data.csv").csv({ typed: true })
 ```
-##Preview of Data
+#Preview of Data
 ```js
 Inputs.table(pollinators)
 ```
+<br><br>
 
 # 1. Body mass and wing span distribution per species
+
+<br><br>
 
 ```js
 Plot.plot({
@@ -32,15 +35,40 @@ Plot.plot({
   color: { legend: true }
   })
   ```
-
+<br><br>
 
   # 2. Ideal weather for pollinating 
 
+<br><br>
 
   ## 2.1. Pollination activity vs temperature 🌡️
 
+<br><br>
 
-  ```js
+```js
+Plot.plot({
+  title: "Pollination Activity vs Temperature 🌡️",
+  marks: [
+    Plot.frame(),
+    Plot.rectY(
+      pollinators,
+      Plot.binX(
+        { y: "count" }, // count observations per temperature bin
+        {
+          x: "temperature",
+          fill: "weather_condition" // color by weather type
+        }
+      )
+    )
+  ],
+  color: { legend: true },
+  height: 300,
+  y: { grid: true, label: "Number of Observations" },
+  x: { label: "Temperature (°C)" }
+})
+```
+
+  <!-- ```js
   Plot.plot({
   marks: [
     Plot.frame(),
@@ -48,7 +76,7 @@ Plot.plot({
     Plot.barY(
       pollinators,
       Plot.groupX(
-        { y: "mean" }, // compute average visit count for each temperature
+        { y: "mean" }, 
         {
           x: "temperature",
           y: "visit_count",
@@ -61,7 +89,9 @@ Plot.plot({
   y: { label: "Average Pollination Activity (visit count)" },
   color: { legend: false }
 })
-```
+``` -->
+
+<br><br>
 
 
   <!-- ```js
@@ -101,7 +131,7 @@ Plot.plot({
     Plot.barY(
       pollinators,
       Plot.groupX(
-        {y: "mean"},
+        {y: "sum"},
         {
           x: "weather_condition",
           y: "visit_count",
