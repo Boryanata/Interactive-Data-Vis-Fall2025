@@ -6,10 +6,12 @@ toc: true
 ```js
 const pollinators = FileAttachment("./data/pollinator_activity_data.csv").csv({ typed: true })
 ```
-#Preview of Data
+# Preview of Our Data
 ```js
 Inputs.table(pollinators)
 ```
+
+# 🐝🌸🍯 Pollination Patterns: Insights from a Local Farm’s Bee Observations
 <br><br>
 
 # 1. Body mass and wing span distribution per species
@@ -42,12 +44,8 @@ Plot.plot({
 <br><br>
 
   ## 2.1. Pollination activity vs temperature 🌡️
-
-<br><br>
-
 ```js
 Plot.plot({
-  title: "Pollination Activity vs Temperature 🌡️",
   marks: [
     Plot.frame(),
     Plot.rectY(
@@ -63,65 +61,12 @@ Plot.plot({
   ],
   color: { legend: true },
   height: 300,
-  y: { grid: true, label: "Number of Observations" },
-  x: { label: "Temperature (°C)" }
+  y: { label: "Number of Observations" },
+  x: { domain: [0, 50], label: "Temperature (°C)" }
 })
 ```
 
-  <!-- ```js
-  Plot.plot({
-  marks: [
-    Plot.frame(),
-    Plot.ruleY([0]),
-    Plot.barY(
-      pollinators,
-      Plot.groupX(
-        { y: "mean" }, 
-        {
-          x: "temperature",
-          y: "visit_count",
-          fill: "steelblue" // single color for all bars
-        }
-      )
-    )
-  ],
-  x: { label: "Temperature (°C)" },
-  y: { label: "Average Pollination Activity (visit count)" },
-  color: { legend: false }
-})
-``` -->
-
 <br><br>
-
-
-  <!-- ```js
-  Plot.plot({
-  marks: [
-    Plot.ruleY([0]),
-    Plot.dot(pollinators, {
-      x: "temperature",
-      y: "visit_count",
-      stroke: "pollinator_species",
-      fill: "pollinator_species", //this is our obstract value z
-      r: 4
-    }),
-    Plot.lineY(
-      Plot.groupX(
-        {y: "mean"},
-        {
-          x: "temperature",
-          y: "visit_count",
-          stroke: "pollinator_species"
-        }
-      )
-    )
-  ],
-  x: {label: "Temperature (°C)"},
-  y: {label: "Pollination Activity (visit count)"},
-  color: {legend: true}
-})
-  ``` -->
-
 
   ## 2.2. Pollination activity by weather condition 🌤️
   ```js
@@ -144,5 +89,24 @@ Plot.plot({
   x: {label: "Weather Condition"},
   y: {label: "Average Visit Count"},
   color: {legend: false}
+})
+  ```
+
+  ## 3. Nectar production 🐝🌸🍯 
+  ```js
+  Plot.plot({
+  marks: [
+    Plot.boxY(pollinators, {
+      x: "flower_species",
+      y: "nectar_production",
+      fill: "flower_species",
+      fillOpacity: 0.8,
+      stroke: "white"
+    })
+  ],
+  color: { legend: false },
+  x: { label: "Flower Species" },
+  y: { label: "Nectar Production (µL)", grid: true },
+  height: 350
 })
   ```
