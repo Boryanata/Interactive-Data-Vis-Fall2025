@@ -87,7 +87,7 @@ Plot.plot({
         {y: "sum"},
         {
           x: "weather_condition",
-          y: "visit_count",
+          y: "visit_count", // changed row count to visit_count
           fill: "weather_condition",
           sort: { x: "y", reverse: true }
         }
