@@ -26,12 +26,14 @@ export default {
         { name: "Week 6 Class", path: "/lab_1/week_6_class" },
       ],
     },
-      {
+    {
       name: "Lab 2: Subway Staffing",
-      open: false,
+      open: true,
       pages: [
         { name: "Instructions", path: "/lab_2/readme" },
-        { name: "Dashboard", path: "/lab_2/index" },
+        { name: "Week 7 Notes", path: "/lab_2/week_7_notes" },
+        { name: "Week 7 Class", path: "/lab_2/week_7_class" },
+        { name: "Playing with AI", path: "/lab_2/playing_with_ai" },
       ],
     },
     {
