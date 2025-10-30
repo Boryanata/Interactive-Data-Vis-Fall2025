@@ -58,8 +58,9 @@ Plot.plot({
     Plot.rectY(
       pollinators,
       Plot.binX(
-        { y: "count" }, // count observations per temperature bin
+        { y: "sum" }, // sum of total visits per temperature bin
         {
+          y: "visit_count",
           x: "temperature",
           fill: "weather_condition" // color by weather type
         }
@@ -68,7 +69,7 @@ Plot.plot({
   ],
   color: { legend: true },
   height: 300,
-  y: { label: "Number of Observations" },
+  y: { label: "Total Number of Visits" },
   x: { domain: [0, 50], label: "Temperature (°C)" }
 })
 ```
@@ -94,7 +95,7 @@ Plot.plot({
     )
   ],
   x: {label: "**Weather Condition**"},
-  y: {label: "Average Visit Count"},
+  y: {label: "Total Visits"},
   color: {legend: false}
 })
   ```
