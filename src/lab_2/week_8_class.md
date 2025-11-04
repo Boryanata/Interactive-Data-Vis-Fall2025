@@ -106,7 +106,7 @@ Plot.plot({
 <!-- Import Data -->
 ```js
 const stocks = await FileAttachment("./stock_data/stocks.csv").csv({ typed: true })
-const events = await FileAttachment("./stock_data/tech_stock_events.csv").csv({ typed: true })
+const events = await FileAttachment("./stock_data/stock_events.csv").csv({ typed: true })
 display(stocks[0])
 display(events[0])
 ```
