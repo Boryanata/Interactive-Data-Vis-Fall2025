@@ -24,6 +24,7 @@ export default {
         { name: "Week 5 Class", path: "/lab_1/week_5" },
         { name: "Week 6 Notes", path: "/lab_1/week_6_notes" },
         { name: "Week 6 Class", path: "/lab_1/week_6_class" },
+        { name: "Feedback", path: "/lab_1/feedback" }
       ],
     },
     {
@@ -33,14 +34,10 @@ export default {
         { name: "Week 7 Notes", path: "/lab_2/week_7_notes" },
         { name: "Week 7 Class", path: "/lab_2/week_7_class" },
         { name: "Playing with AI", path: "/lab_2/playing_with_ai" },
-      ],
-    },
-      {
-      name: "Lab 2: Subway Staffing",
-      open: true,
-      pages: [
         { name: "Instructions", path: "/lab_2/readme" },
         { name: "Dashboard", path: "/lab_2/index" },
+        { name: "Week 8 Notes", path: "/lab_2/week_8_notes" },
+        { name: "Week 8 Class", path: "/lab_2/week_8_class" },
       ],
     },
   ],
