@@ -38,6 +38,8 @@ export default {
         { name: "Dashboard", path: "/lab_2/index" },
         { name: "Week 8 Notes", path: "/lab_2/week_8_notes" },
         { name: "Week 8 Class", path: "/lab_2/week_8_class" },
+        { name: "Week 9 Notes", path: "/lab_2/week_9_notes" },
+        { name: "Week 9 Class", path: "/lab_2/week_9_class" },
       ],
     },
   ],
