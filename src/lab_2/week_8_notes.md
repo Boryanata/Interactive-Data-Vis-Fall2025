@@ -254,7 +254,7 @@ This is helpful, but wouldn't it be nice if these dots correspond to the price a
 </details>
 <br><br>
 
-## Data joins
+## Data Joins
 
 Lab 2 includes multiple datasets which introduces new challenges when we want to marry the data points. There may be instances where we want to filter to state values, combine data, or reference values from one dataset into another. 
 
@@ -358,15 +358,17 @@ const people_with_state_again = people.map(personObject => ({
 display(people_with_state_again)
 ```
 
+These are just a couple ways to do data joins in javascript, but this is an example of something that AI can be very helpful at, with some clear direction and requests for simple JS functions to achieve what you're looking for. 
+
 
 **Example 2: Find a value from one dataset in another dataset**
 
 Now that we know how to do this join, we can do these arrow functions within the channel itself. 
 
 Before we get into the join code here, it's important to remember:
-1. Data channels can be functions, so we could use that to our advantage to get from one data point to a related data point in another dataset
+1. Data channels can be functions, so we could use that to our advantage to get from one data point to a related data point in another dataset.
 2. When we define arrow functions, we have to have a very clear understanding of what is being passed to the function. If we need to, we can use `console.log(data)` within that function to debug.
-3. Historically we have just used the generic `d` declaration in our functions (`(d) => d.price`), but we cannot use that twice in two nested functions -- we have to use another variable (commonly, `e`, or a helpful word, like `event => event.Date`). 
+3. Historically we have just used the generic `d` declaration in our functions (`(d) => d.price`), but we _cannot_ use `d` twice within two nested functions (`(d) => { d.events.filter((d) => d.attendance) }`) -- we have to use another variable (commonly, `e`, or a helpful word, like `event => event.Date`). 
 
 Let's make another dropdown closer to this example that we can leverage in the below chart. 
 ```js
@@ -380,6 +382,12 @@ const selectedStockEvents = events.filter(d => d["Related Tickers"].includes(yet
 // just look at the first object of this data
 display(selectedStockData[0])
 ```
+
+When we finally return to our original intention stated earlier: 
+
+>Ideally the circle could be positioned on the line. This means we would have to position the event at the appropriate x value (date), then look up the y value for the stock, and use that for the y value of the dot.
+
+We can use the channel function to look up the price value for that day in the other dataset.
 
 Just like in the earlier example, we will use two marks for this example. The first mark is the stock line data (`Plot.line()`), and the second mark is the stock event data (`Plot.dot()`). Each has its own dataset. When we render the `y` value of the event mark, we will look for the stock value for that date in the other dataset. 
 
@@ -421,11 +429,13 @@ Plot.plot({
       x: selectedStockEvents[0].Date, // position at the event date
       y: selectedStockData.find(e => { // y position at the ticker line value on this date
         return e.Date.toDateString() === selectedStockEvents[0].Date.toDateString()
-      })?.Close
+      })?.Close // the ? here just means that only return it if it exists, and don't "fail" if its undefined.
     }),
   ]
 })
 ```
+
+Now we know how to use values from one dataset within a visualization of another dataset!
 
 <hr/>
 

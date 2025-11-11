@@ -37,6 +37,8 @@ export default {
         { name: "Playing with AI", path: "/lab_2/playing_with_ai" },
         { name: "Week 8 Notes", path: "/lab_2/week_8_notes" },
         { name: "Week 8 Class", path: "/lab_2/week_8_class" },
+        { name: "Week 9 Notes", path: "/lab_2/week_9_notes" },
+        { name: "Week 9 Class", path: "/lab_2/week_9_class" },
       ],
     },
     {
