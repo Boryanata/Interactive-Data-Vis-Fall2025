@@ -4,43 +4,42 @@ toc: false
 ---
 
 
-# Last Class Review 
 ```js
-// const stocks = await FileAttachment("./stock_data/stocks.csv").csv({ typed: true })
-// const events = await FileAttachment("./stock_data/stock_events.csv").csv({ typed: true })
-// display(stocks.slice(0, 10))
-// display(events)
+const stocks = await FileAttachment("./stock_data/stocks.csv").csv({ typed: true })
+const events = await FileAttachment("./stock_data/stock_events.csv").csv({ typed: true })
+display(stocks.slice(0, 10))
+display(events)
 ```
 
 <!-- Create an array of unique tickers: -->
-```js
-// const allTickers = stocks.map(d => d.Ticker)
-// // display(allTickers)
-// const setTickers = new Set(allTickers)
-// const uniqueTickers = Array.from(setTickers)
-// display(uniqueTickers)
+```js echo
+const allTickers = stocks.map(d => d.Ticker)
+// display(allTickers)
+const setTickers = new Set(allTickers)
+const uniqueTickers = Array.from(setTickers)
+display(uniqueTickers)
 ```
 
-<!-- ```js
+```js
 const selectedStock = view(Inputs.select(
   [null, ...uniqueTickers], 
   { value: "AAPL" } //"select" }
   ))
-``` -->
+```
 
-<!-- Selected stock is: ${selectedStock} -->
+Selected stock is: ${selectedStock}
 
-<!-- ```js
+```js
 const filteredStocks = stocks.filter(d => d.Ticker === selectedStock)
 const filteredEvents = events.filter(d => d["Related Tickers"].includes(selectedStock))
 display(filteredEvents)
-``` -->
+```
 
-<!-- ```js
+```js
 display(width)
-``` -->
+```
 
-<!-- ```js
+```js
 Plot.plot({
   title: selectedStock === null 
     ? "pick a stock to continue" 
@@ -83,8 +82,8 @@ Plot.plot({
     })
   ]
 })
-``` -->
-<!-- 
+```
+
 ```js
 Plot.plot({
   title: selectedStock === null 
@@ -125,7 +124,7 @@ Plot.plot({
     ),
   ]
 })
-``` -->
+```
 
 
 
