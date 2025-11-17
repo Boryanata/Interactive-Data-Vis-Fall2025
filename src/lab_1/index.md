@@ -58,7 +58,7 @@ Plot.plot({
     Plot.rectY(
       pollinators,
       Plot.binX(
-        { y: "sum" }, // sum of total visits per temperature bin
+        { y: "sum" }, // sum of total visits per temperature bin. Sum is a reducer.
         {
           y: "visit_count",
           x: "temperature",
@@ -83,10 +83,10 @@ Plot.plot({
     Plot.frame(),
     Plot.barY(
       pollinators,
-      Plot.groupX(
-        {y: "sum"},
+      Plot.groupX( // groupX is the TRANSFORM 
+        {y: "sum"}, // sum is a reducer - the OUTPUTS
         {
-          x: "weather_condition",
+          x: "weather_condition", // x and y are the OPTIONS/channels
           y: "visit_count", // changed row count to visit_count
           fill: "weather_condition",
           sort: { x: "y", reverse: true }

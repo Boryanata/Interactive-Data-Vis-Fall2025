@@ -13,11 +13,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 </style> -->
 
-# <span style="color: green;">LAB 0</span> <br/><span style="font-size: 14px;"> _Boryana's baby steps on planet IDV 🪐_
+# <span style="color:limegreen;">LAB 0</span> <br/><span style="font-size: 14px;"> _Boryana's baby steps on planet IDV 🪐_
 
 <br><br>
 
-<span style="font-size: 24px;">Tracking and Understanding My dietary patterns</span>
+<span style="font-size: 24px;">Tracking and Understanding My Dietary Patterns</span>
 
 **Dataset and Variables**
 
@@ -70,6 +70,7 @@ I’ve tracked the following variables, which represent the columns in my datase
 
 <img src="assets/mood-index.png" alt="Mood Index" width="900">
 
+**Interactive Dashboard**
 
 ```js
 const food = view(
