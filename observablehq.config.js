@@ -51,7 +51,16 @@ export default {
         { name: "Week 10 Class", path: "/lab_3/week_10_class" },
         { name: "Top Name Usage", path: "/lab_3/top_names" },
       ],
+    },
+    {
+      name: "Lab 4: Clearwater Crisis",
+      open: true,
+      pages: [
+        { name: "Instructions", path: "/lab_4/readme" },
+        { name: "Dashboard", path: "/lab_4/index" },
+      ],
     }
+
   ],
 
   // Content to add to the head of the page, e.g. for a favicon:
