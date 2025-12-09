@@ -598,7 +598,7 @@ Plot.plot({
 ```
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
-## Conclusion
+## Key Takeaways
 <br>
 This analysis shows a campaign with clear momentum but uneven support across the city. Voters responded strongly to the candidate’s housing and transit policies, yet other issues produced more mixed reactions. Election results and turnout patterns reveal both reliable areas of support and districts where outreach lagged. Moving forward, a more targeted strategy—one that amplifies message clarity and strengthens engagement in underperforming districts—will be essential for converting this baseline support into a winning coalition.
 </div>
