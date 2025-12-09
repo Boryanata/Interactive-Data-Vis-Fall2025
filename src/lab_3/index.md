@@ -4,6 +4,30 @@ toc: false
 theme: "cotton"
 ---
 
+<!-- ```js
+```html
+<style>
+/* Expand the main notebook column */
+.observablehq {
+  max-width: 1200px !important;
+}
+
+/* Expand markdown cells inside the column */
+.observablehq .cell.markdown {
+  max-width: 1100px !important;
+}
+
+/* Optional: Add comfortable line length */
+.wide-text {
+  max-width: 1100px;
+  margin: 1rem 0 1.5rem 1rem;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+</style>
+``` -->
+
+
 ```js
 html`<style>
 /* Expand the main column */
@@ -16,7 +40,6 @@ html`<style>
   max-width: 1000px !important;
 }
 </style>`
-
 ```
 
 ```js
@@ -37,7 +60,11 @@ const events = await FileAttachment("data/campaign_events.csv").csv({ typed: tru
 // display(survey.slice(0,10))
 // display(events.slice(0,10))
 ```
-
+```js
+// Inputs.table(survey)
+// Inputs.table(results)
+// Inputs.table(events)
+```
 
 ```js
 // The nyc file is saved in data as a topoJSON instead of a geoJSON. Thats primarily for size reasons -- it saves us 3MB of data. For Plot to render it, we have to convert it back to its geoJSON feature collection. 
@@ -186,16 +213,13 @@ html`
   </div>
 `
 ```
-<br>
 
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
-## At a Glance: The Race in Numbers
-<br>
-The bar chart shows the overall balance of votes cast across all community districts. The candidate secured a solid majority, outpacing the opponent by more than ten percentage points citywide. Understanding this top-level result helps frame the geographic and demographic patterns examined in the sections that follow. This snapshot also reveals the magnitude of the citywide lead, offering a clear benchmark against which district-level variations can be compared. With this baseline established, the subsequent visualizations explore how geography, income, and voter sentiment shaped the distribution of support across the city.
+The candidate secured a solid majority, outpacing the opponent by more than ten percentage points citywide. Understanding this top-level result helps frame the geographic and demographic patterns examined in the sections that follow. This snapshot also reveals the magnitude of the citywide lead, offering a clear benchmark against which district-level variations can be compared. With this baseline established, the subsequent visualizations explore how geography, income, and voter sentiment shaped the distribution of support across the city.
 </div>
 
-```js
+<!-- ```js
 // 3. Simple INTRO bar chart
 Plot.plot({
   width: 700,
@@ -257,7 +281,7 @@ Plot.plot({
     Plot.ruleX([0])
   ]
 })
-```
+``` -->
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
 ## Geographic and Income Patterns in Candidate Support
@@ -376,8 +400,8 @@ districts.features[0].properties
 
 ```js
 Plot.plot({
-  width: 1500,
-  height: 1100,
+  width: 1100,
+  height: 800,
   marginTop: 40,
   marginRight: 20,
   marginBottom: 40,
@@ -455,7 +479,7 @@ Plot.plot({
         d.income_category === "High"   ? "$$$" : "",
 
       fill: "#000000",
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: "bold",
       textAnchor: "center",
       dy: 4,
@@ -484,7 +508,7 @@ Plot.text(
     dy: -5,          // move up closer (was 80)
 
     fill: "#000000",
-    fontSize: 16,
+    fontSize: 12,
     textAnchor: "start",
     // stroke: "white",
     // strokeWidth: 3
@@ -496,10 +520,10 @@ Plot.text(
 
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
-## Voter Sentiment by Policy Topic
+## Voter Sentiment by Policy Issue
 <br>
 The survey responses reveal clear differences in how voters perceived the candidate’s policy positions. Housing and public transit received the strongest levels of agreement, suggesting these messages resonated most consistently across respondents. Childcare and small business tax policy showed more mixed views, with a substantial share of neutral or only moderately supportive responses. Police reform displayed the widest spread of opinions, indicating it may be a more polarizing or less clearly communicated issue for the campaign.
-Together, these patterns highlight where the candidate’s platform aligns well with voter priorities and where additional clarification or targeted outreach could strengthen future support.
+Together, these patterns highlight where the candidate’s platform aligns well with voter priorities and where additional clarification or targeted outreach could strengthen future support. For a future campaign, emphasizing housing and transit in core messaging, while clarifying the candidate’s stance on police reform and small business tax policy, could help convert lukewarm or uncertain voters into more consistent supporters.
 </div>
 
 ```js
@@ -533,6 +557,22 @@ const issueDist = issueConfigs.flatMap(({ key, label }) => {
   }));
 });
 
+// Calculate "strongly agree" (score 5) share for each issue and sort
+const issueStronglyAgree = issueConfigs.map(({ key, label }) => {
+  const rows = survey.filter(d => d[key] != null);
+  const total = rows.length || 1;
+  const stronglyAgree = rows.filter(d => d[key] === 5).length;
+  return {
+    label,
+    stronglyAgreeShare: stronglyAgree / total
+  };
+});
+
+// Sort issues by strongly agree share (descending - highest at top)
+const sortedIssues = issueStronglyAgree
+  .sort((a, b) => b.stronglyAgreeShare - a.stronglyAgreeShare)
+  .map(d => d.label);
+
 issueDist.slice(0, 10); // quick check
 ```
 
@@ -545,7 +585,7 @@ Plot.plot({
   marginTop: 50,
   marginBottom: 50,
 
-  title: "Issue Alignment Across the Electorate",
+  title: "Issue Alignment",
   // subtitle: "How Voters Felt About Key Issues",
 
   x: {
@@ -557,7 +597,7 @@ Plot.plot({
 
   y: {
     label: null,
-    domain: issueConfigs.map(d => d.label) // keep issues in this order
+    domain: sortedIssues // order by "strongly agree" share (highest at top)
   },
 
   color: {
@@ -594,12 +634,270 @@ Plot.plot({
     // })
   ]
 })
-
 ```
+<div style="max-width: 1100px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
+
+## Do Campaign Efforts Drive Turnout? A Two-Part Look
+<br>
+
+### GOTV Knocking vs. Turnout
+The first scatterplot compares turnout with the intensity of door knocking, measured as GOTV doors knocked per 1,000 registered voters in each district. While there is a slight upward slope in the regression line, the relationship is weak: districts with extensive door knocking did not consistently achieve higher turnout, and districts with very low GOTV effort sometimes posted some of the highest turnout levels overall. The wide vertical spread of points at nearly every GOTV level indicates that knocking more doors alone was not a reliable predictor of turnout. This suggests that structural district characteristics—such as civic engagement patterns, demographics, or competitiveness—played a larger role in driving turnout than the field program’s door-to-door efforts.
+
+### Candidate Hours vs. Turnout
+The second scatterplot shows a noticeably stronger relationship between candidate hours spent in a district and turnout. Here the regression line slopes upward more clearly, and districts cluster more tightly around that trend. Districts where the candidate spent more time generally saw higher turnout, with several high-engagement districts reaching turnout rates above 70–80%. While this pattern still does not establish causation, it suggests that the candidate’s personal presence may have been more closely aligned with voter mobilization than the GOTV program alone. This could reflect targeted strategy (the campaign may have sent the candidate to areas already likely to turn out) or genuine mobilizing value from direct engagement.
+</div>
+
+```js
+// ---- GOTV vs turnout ----
+const gotvTurnout = results.map(d => {
+  const totalVoters = d.total_registered_voters ?? 0;
+
+  return {
+    ...d,
+    doors_per_1k: totalVoters > 0
+      ? d.gotv_doors_knocked / (totalVoters / 1000)
+      : null,
+    turnout_pct: d.turnout_rate
+  };
+}).filter(d => d.doors_per_1k != null && d.turnout_pct != null);
+
+
+// ---- Candidate hours vs turnout ----
+const hoursTurnout = results
+  .map(d => ({
+    ...d,
+    hours: d.candidate_hours_spent,
+    turnout_pct: d.turnout_rate
+  }))
+  .filter(d => d.hours != null && d.turnout_pct != null);
+```
+
+```js
+html`
+<div style="
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 20px;
+">
+
+  <!-- ========================== -->
+  <!-- PLOT 1: Doors knocked vs turnout -->
+  <!-- ========================== -->
+  <div>
+    ${Plot.plot({
+      width: 450,
+      height: 360,
+      marginLeft: 60,
+      marginRight: 20,
+      marginTop: 50,
+      marginBottom: 50,
+
+      title: "GOTV Knocking vs. Turnout",
+      x: {
+        label: "Doors knocked per 1,000 voters →",
+        grid: true
+      },
+      y: {
+        label: "Turnout rate (%) ↑",
+        grid: true
+      },
+
+      marks: [
+        // dots
+        Plot.dot(gotvTurnout, {
+          x: "doors_per_1k",
+          y: "turnout_pct",
+          r: 4,
+          fill: "#555555",
+          stroke: "white",
+          strokeWidth: 0.7,
+          tip: d =>
+            [
+              `District: ${d.boro_cd}`,
+              `Turnout: ${d.turnout_pct.toFixed(1)}%`,
+              `Doors knocked: ${d3.format(",")(d.gotv_doors_knocked)}`,
+              `Registered voters: ${d3.format(",")(d.total_registered_voters)}`,
+              `Doors per 1,000: ${d.doors_per_1k.toFixed(1)}`
+            ].join("\n")
+        }),
+
+        // trendline
+        Plot.linearRegressionY(gotvTurnout, {
+          x: "doors_per_1k",
+          y: "turnout_pct",
+          stroke: "#999999",
+          strokeWidth: 1.5
+        })
+      ]
+    })}
+  </div>
+
+
+  <!-- ========================== -->
+  <!-- PLOT 2: Candidate hours vs turnout -->
+  <!-- ========================== -->
+  <div>
+    ${Plot.plot({
+      width: 450,
+      height: 360,
+      marginLeft: 60,
+      marginRight: 20,
+      marginTop: 50,
+      marginBottom: 50,
+
+      title: "Candidate Hours vs. Turnout",
+      x: {
+        label: "Candidate hours spent →",
+        grid: true
+      },
+      y: {
+        label: "Turnout rate (%) ↑",
+        grid: true
+      },
+
+      marks: [
+        // dots
+        Plot.dot(hoursTurnout, {
+          x: "hours",
+          y: "turnout_pct",
+          r: 4,
+          fill: "#555555",
+          stroke: "white",
+          strokeWidth: 0.7,
+          tip: d =>
+            [
+              `District: ${d.boro_cd}`,
+              `Turnout: ${d.turnout_pct.toFixed(1)}%`,
+              `Candidate hours: ${d.hours}`
+            ].join("\n")
+        }),
+
+        // trendline
+        Plot.linearRegressionY(hoursTurnout, {
+          x: "hours",
+          y: "turnout_pct",
+          stroke: "#999999",
+          strokeWidth: 1.5
+        })
+      ]
+    })}
+  </div>
+
+</div>
+`
+```
+
+
+<!-- ```js
+// PLOT 1: Doors knocked vs turnout
+Plot.plot({
+  width: 900,
+  height: 360,
+  marginLeft: 70,
+  marginRight: 30,
+  marginTop: 60,
+  marginBottom: 55,
+
+  title: "Does GOTV Knocking Boost Turnout?",
+  x: {
+    label: "GOTV doors knocked per 1,000 registered voters →",
+    grid: true
+  },
+  y: {
+    label: "Turnout rate (%) ↑",
+    grid: true
+  },
+
+  marks: [
+    Plot.dot(gotvTurnout, {
+      x: "doors_per_1k",
+      y: "turnout_pct",
+      r: 4,
+      fill: "#555555",
+      stroke: "white",
+      strokeWidth: 0.7,
+      tip: d =>
+        [
+          `District: ${d.boro_cd}`,
+          `Turnout: ${d.turnout_pct.toFixed(1)}%`,
+          `Doors knocked: ${d3.format(",")(d.gotv_doors_knocked)}`,
+          `Registered voters: ${d3.format(",")(d.total_registered_voters)}`,
+          `Doors per 1,000 voters: ${d.doors_per_1k.toFixed(1)}`
+        ].join("\n")
+    }),
+    Plot.linearRegressionY(gotvTurnout, {
+      x: "doors_per_1k",
+      y: "turnout_pct",
+      stroke: "#999999",
+      strokeWidth: 1.5
+    })
+  ]
+})
+```
+```js
+// PLOT 2: Candidate hours vs turnout
+Plot.plot({
+  width: 900,
+  height: 360,
+  marginLeft: 70,
+  marginRight: 30,
+  marginTop: 40,
+  marginBottom: 55,
+
+  title: "Does Candidate Time on the Ground Boost Turnout?",
+  x: {
+    label: "Candidate hours spent in district →",
+    grid: true
+  },
+  y: {
+    label: "Turnout rate (%) ↑",
+    grid: true
+  },
+
+  marks: [
+    Plot.dot(hoursTurnout, {
+      x: "hours",
+      y: "turnout_pct",
+      r: 4,
+      fill: "#555555",
+      stroke: "white",
+      strokeWidth: 0.7,
+      tip: d =>
+        [
+          `District: ${d.boro_cd}`,
+          `Turnout: ${d.turnout_pct.toFixed(1)}%`,
+          `Candidate hours: ${d.hours}`
+        ].join("\n")
+    }),
+    Plot.linearRegressionY(hoursTurnout, {
+      x: "hours",
+      y: "turnout_pct",
+      stroke: "#999999",
+      strokeWidth: 1.5
+    })
+  ]
+})
+``` -->
+
+
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
-## Key Takeaways
+## Key Takeaways and Next Steps
 <br>
-This analysis shows a campaign with clear momentum but uneven support across the city. Voters responded strongly to the candidate’s housing and transit policies, yet other issues produced more mixed reactions. Election results and turnout patterns reveal both reliable areas of support and districts where outreach lagged. Moving forward, a more targeted strategy—one that amplifies message clarity and strengthens engagement in underperforming districts—will be essential for converting this baseline support into a winning coalition.
+This analysis points to a campaign with clear momentum but uneven support across the city. Three themes stand out:
+
+- **Strong policy resonance on housing and transit.** These issues show the highest levels of agreement in the survey data, suggesting they should remain at the core of the candidate’s message.
+- **Uneven geographic performance by income and district.** Some districts combine strong vote share and turnout, while others lag—particularly in [lower/higher]-income areas where the map shows weaker support.
+- **Mixed reactions to childcare, small business tax, and police reform.** These topics appear more polarizing or less clearly understood, with a wider spread of responses.
+
+For a future campaign, a targeted strategy that:
+1) doubles down on housing and transit as signature issues,  
+2) devotes more field time and GOTV resources to underperforming districts, and  
+3) refines messaging around childcare, small business tax, and police reform  
+
+will be key to turning today’s baseline support into a more durable winning coalition.
+
 </div>
 
