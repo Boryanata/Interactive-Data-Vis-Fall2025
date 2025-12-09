@@ -383,7 +383,7 @@ Plot.plot({
   marginBottom: 40,
   marginLeft: 20,
 
-  title: "Candidate Vote Share Across NYC Districts",
+  title: "Candidate Vote Share Across NYC Districts by Income Level",
   // subtitle: "Red shade shows candidate vote share",
   // subtitle: "$ = Low income  $$ = Middle income  $$$ = High income",
 
