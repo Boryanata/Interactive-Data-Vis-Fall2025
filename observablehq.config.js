@@ -58,6 +58,8 @@ export default {
       pages: [
         { name: "Instructions", path: "/lab_4/readme" },
         { name: "Dashboard", path: "/lab_4/index" },
+        { name: "Week 13 Notes", path: "/lab_4/week_13_notes" },
+        { name: "Week 13 Class", path: "/lab_4/week_13_class" },
       ],
     }
 

@@ -251,7 +251,7 @@ display(unemployment)
 4. Use topojson from d3 to convert this topology file into a feature collection we can render in svg:
 
 ```js echo
-const counties = topojson.feature(geo, geo.objects.data)
+const counties = topojson.feature(geo, geo.objects.counties)
 display(counties)
 ```
 5. [optional] If your GeoJSON data doesn't already have the data as part of the properties, you'll need to create a join to add that information. 
