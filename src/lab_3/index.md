@@ -32,12 +32,19 @@ theme: "cotton"
 html`<style>
 /* Expand the main column */
 .observablehq {
-  max-width: 1100px !important;    /* increase page width */
+  max-width: 1200px !important;    /* increase page width */
 }
 
 /* Make markdown cells full-width inside the expanded layout */
 .observablehq .cell.markdown {
-  max-width: 1000px !important;
+  max-width: 1100px !important;
+}
+
+/* Ensure paragraphs within text divs respect parent width */
+.observablehq .cell.markdown > div[style*="max-width"] p,
+.observablehq .cell.markdown > div[style*="max-width"] > * {
+  max-width: 100%;
+  box-sizing: border-box;
 }
 </style>`
 ```
@@ -99,26 +106,24 @@ const fmtPercent = d3.format(".1f"); // e.g. 56.2
 const fmtNumber  = d3.format(",");   // e.g. 412,345
 ```
 
-<div style="max-width: 820px; margin: 1.5rem 0 2rem 1rem; font-size: 1.05rem; line-height: 1.45;">
+<div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
-## Mapping Momentum: A Citywide Look at the 2024 Campaign
+# Mapping Momentum: 
+# A Look at NYC's 2024 Mayoral Campaign
 <br>
-
 New York City’s 2024 mayoral race generated a rich trail of data—from district-level election returns to survey responses and months of field activity. This dashboard brings those sources together to provide a clear, citywide view of how the campaign unfolded and where the candidate stands heading into a potential future run.  
-
 Across five boroughs and dozens of community districts, we examine overall performance, geographic and income-based patterns, voter sentiment on key issues, and the reach of Get Out The Vote efforts. By connecting what happened at the polls with how voters felt and where campaign resources were deployed, this analysis highlights the areas where the campaign succeeded and the opportunities for improvement.  
-
 The goal is simple: to convert raw campaign data into strategic insight—supporting smarter decisions and stronger momentum in the next election cycle.
 
 </div>
 
+<br>
 
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
 ## Citywide Results at a Glance
 <br>
-
-The summary below highlights the total number of votes cast for each candidate, their respective vote shares, and the resulting margin of victory or loss. These figures ground the rest of the dashboard, offering a starting point for interpreting geographic patterns, voter sentiment, and the impact of the field campaign.
+The summary below highlights the total number of votes cast for each candidate, their respective vote shares, and the resulting margin of victory or loss. These figures ground the rest of the dashboard, offering a starting point for interpreting geographic patterns, voter sentiment, and the impact of the field campaign. The candidate secured a solid majority, outpacing the opponent by more than ten percentage points citywide. Understanding this top-level result helps frame the geographic and demographic patterns examined in the sections that follow. This snapshot also reveals the magnitude of the citywide lead, offering a clear benchmark against which district-level variations can be compared. With this baseline established, the subsequent visualizations explore how geography, income, and voter sentiment shaped the distribution of support across the city.
 
 </div>
 
@@ -132,8 +137,8 @@ html`
       margin: 1.5rem 0 2rem 1rem;
       padding: 1.5rem 2rem;
       border-radius: 16px;
-      background: #f9f5ff;
-      border: 1px solid #e0ddff;
+      background: rgba(254, 254, 254, 0.6);
+      border: 1px solid rgba(224, 221, 255, 0.9);
       box-shadow: 0 6px 18px rgba(0,0,0,0.04);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     "
@@ -167,7 +172,7 @@ html`
         display: flex;
         flex-wrap: wrap;
         gap: 1.25rem;
-        border-top: 1px solid #e4e1ff;
+        border-top: 1px solid rgba(228, 221, 255, 0.5);
         padding-top: 1rem;
       "
     >
@@ -214,81 +219,20 @@ html`
 `
 ```
 
-<div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
+<!-- <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
 The candidate secured a solid majority, outpacing the opponent by more than ten percentage points citywide. Understanding this top-level result helps frame the geographic and demographic patterns examined in the sections that follow. This snapshot also reveals the magnitude of the citywide lead, offering a clear benchmark against which district-level variations can be compared. With this baseline established, the subsequent visualizations explore how geography, income, and voter sentiment shaped the distribution of support across the city.
-</div>
+</div> -->
 
-<!-- ```js
-// 3. Simple INTRO bar chart
-Plot.plot({
-  width: 700,
-  height: 320,
-  marginLeft: 90,
-  marginRight: 40,
-  marginTop: 60,
-  marginBottom: 50,
+<br>
 
-  title: "Citywide Vote Totals",
-  // subtitle: "Total votes across all NYC districts",
-
-  x: {
-    label: "Total votes →",
-    grid: true,
-    tickFormat: d3.format(",")
-  },
-
-  y: {
-    label: null,
-    domain: ["Candidate", "Opponent"]
-  },
-
-  color: {
-    legend: true,
-    label: "Vote for",
-    domain: ["Candidate", "Opponent"],
-    range: ["#c21a1c", "#4575b4"]  // red for candidate, blue for opponent
-  },
-
-  marks: [
-    // Bars
-    Plot.barX(overallTotals, {
-      x: "votes",
-      y: "group",
-      fill: "group",
-      tip: d =>
-        `${d.group}\nTotal votes: ${d3.format(",")(d.votes)}`
-    }),
-
-    // Optional: labels at end of bars with % share
-    Plot.text(
-      overallTotals.map(d => ({
-        group: d.group,
-        votes: d.votes,
-        label: `${(d.votes / (totalCandidate + totalOpponent) * 100).toFixed(1)}%`
-      })),
-      {
-        x: "votes",
-        y: "group",
-        text: "label",
-        dx: 6,
-        dy: 3,
-        textAnchor: "start",
-        fontWeight: "bold"
-      }
-    ),
-
-    Plot.ruleX([0])
-  ]
-})
-``` -->
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
 ## Geographic and Income Patterns in Candidate Support
 <br>
 This map shows how the candidate’s support varied across New York City’s community districts. Darker shades indicate higher vote share, revealing strongholds in several areas of Brooklyn, the Bronx, and northern Manhattan. Lighter districts tended to favor the opponent or were more competitive overall. The dollar-sign markers overlay income categories, highlighting how electoral support intersected with neighborhood economic conditions. Together, these patterns help identify where the campaign performed well and where additional outreach may be needed.
 </div>
-<br>
+
 
 ```js
 // =========================
@@ -401,7 +345,7 @@ districts.features[0].properties
 ```js
 Plot.plot({
   width: 1100,
-  height: 800,
+  height: 700,
   marginTop: 40,
   marginRight: 20,
   marginBottom: 40,
@@ -469,6 +413,12 @@ Plot.plot({
       }
     }),
 
+      // LAYER 1.5 — Softening / Matte Overlay 
+    Plot.geo(matchedDistricts, {
+      fill: "rgba(255,255,255,0.1)", // adjust 0.3–0.6 depending on softness
+      stroke: null
+    }),
+
     // LAYER 2 — Dollar-sign labels at centroids for income level
     Plot.text(districtLabelPoints, {
       x: "longitude",
@@ -479,14 +429,14 @@ Plot.plot({
         d.income_category === "High"   ? "$$$" : "",
 
       fill: "#000000",
-      fontSize: 12,
+      fontSize: 10,
       fontWeight: "bold",
       textAnchor: "center",
       dy: 4,
 
       // --- add halo/stroke ---
       stroke: "white",
-      strokeWidth: 3
+      strokeWidth: 2
     }),
 
 // LAYER 3 — Income legend INSIDE the plot (positioned under color scale)
@@ -505,7 +455,7 @@ Plot.text(
     dx: -18,          // try 60 first — adjust to 50 or 70 based on your layout
 
     // vertical shift: just below the color scale
-    dy: -5,          // move up closer (was 80)
+    dy: -10,          // move up closer (was 80)
 
     fill: "#000000",
     fontSize: 12,
@@ -513,16 +463,18 @@ Plot.text(
     // stroke: "white",
     // strokeWidth: 3
   }
-)
+),
   ]
 })
 ```
+<br>
 
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
 ## Voter Sentiment by Policy Issue
 <br>
-The survey responses reveal clear differences in how voters perceived the candidate’s policy positions. Housing and public transit received the strongest levels of agreement, suggesting these messages resonated most consistently across respondents. Childcare and small business tax policy showed more mixed views, with a substantial share of neutral or only moderately supportive responses. Police reform displayed the widest spread of opinions, indicating it may be a more polarizing or less clearly communicated issue for the campaign.
+The survey responses reveal clear differences in how voters perceived the candidate’s policy positions. Childcare, affordable housing, and public transit received the strongest levels of agreement, suggesting these messages resonated most consistently across respondents. Small business tax policy showed more mixed views, with a substantial share of neutral or only moderately supportive responses. Police reform displayed the widest spread of opinions, indicating it may be a more polarizing or less clearly communicated issue for the campaign.
+<br>
 Together, these patterns highlight where the candidate’s platform aligns well with voter priorities and where additional clarification or targeted outreach could strengthen future support. For a future campaign, emphasizing housing and transit in core messaging, while clarifying the candidate’s stance on police reform and small business tax policy, could help convert lukewarm or uncertain voters into more consistent supporters.
 </div>
 
@@ -578,8 +530,8 @@ issueDist.slice(0, 10); // quick check
 
 ```js
 Plot.plot({
-  width: 900,
-  height: 340,
+  width: 820,
+  height: 310,
   marginLeft: 170,
   marginRight: 30,
   marginTop: 50,
@@ -635,16 +587,185 @@ Plot.plot({
   ]
 })
 ```
-<div style="max-width: 1100px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
+<br>
+
+<div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
+
+## Does familiarity with the candidate affect how positively voters view the campaign’s key issues?
+<br>
+
+Across most issues, respondents who had not heard of the candidate actually report slightly higher average alignment with the campaign’s policies than those who were already aware. The gap is most pronounced on childcare, housing, transit, and small business tax policy, where the “not aware” bar extends further to the right than the “aware” bar. Only on police reform do aware respondents rate the candidate’s position marginally higher.
+
+This pattern suggests that the policies themselves are reasonably appealing in the abstract, but that knowing the candidate does not automatically boost perceived alignment—and may even introduce more skepticism or mixed feelings. For a future campaign, this points to a different challenge than simple name recognition: the candidate may need to focus on how they are framed and talked about, so that increased awareness reinforces, rather than dampens, the positive reaction many voters have to the policy agenda itself.
+
+</div>
+
+<!-- This outcome MAKES ABSOLUTELY NO SENSE. confirmed the raw averages, numbers are correct. Spent hours on it so I'm keeping it :-) -->
+
+<!-- ```js
+issueConfigs.map(({key, label}) => {
+  const aware = survey.filter(d => d.heard_of_candidate === "Yes" && d[key] != null);
+  const unaware = survey.filter(d => d.heard_of_candidate === "No" && d[key] != null);
+
+  return {
+    issue: label,
+    aware_avg: d3.mean(aware, d => d[key]),
+    unaware_avg: d3.mean(unaware, d => d[key]),
+    aware_n: aware.length,
+    unaware_n: unaware.length
+  };
+})
+``` -->
+
+```js
+// === DATA PREP: Average alignment by awareness (stacked rows) ===
+
+const awareSimple = issueConfigs.flatMap(({ key, label }) => {
+  const yesRows = survey.filter(
+    d => d[key] != null && d.heard_of_candidate === "Yes"
+  );
+  const noRows = survey.filter(
+    d => d[key] != null && d.heard_of_candidate === "No"
+  );
+
+  return [
+    {
+      issue: label,
+      aware: "Aware",
+      avg: d3.mean(yesRows, d => d[key]),
+      issueAware: `${label} — Aware`
+    },
+    {
+      issue: label,
+      aware: "Not aware",
+      avg: d3.mean(noRows, d => d[key]),
+      issueAware: `${label} — Not aware`
+    }
+  ];
+});
+
+// Order: keep same issue order as your earlier chart, if available
+const awarenessIssueOrder =
+  typeof sortedIssues !== "undefined" && sortedIssues.length
+    ? sortedIssues
+    : issueConfigs.map(d => d.label);
+
+// Build y-domain: Aware row, then Not aware row for each issue
+// const awareYDomain = [];
+// for (const issue of awarenessIssueOrder) {
+//   awareYDomain.push(`${issue} — Aware`);
+//   awareYDomain.push(`${issue} — Not aware`);
+// }
+// Build y-domain: Aware, Not aware, then an empty spacer row for each issue
+const awareYDomain = [];
+for (const issue of awarenessIssueOrder) {
+  awareYDomain.push(`${issue} — Aware`);
+  awareYDomain.push(`${issue} — Not aware`);
+  awareYDomain.push(`${issue} — `);  // spacer row: label intentionally blank
+}
+```
+
+```js
+html`${Plot.plot({
+  width: 820,
+  height: 35 * awareYDomain.length,   // a bit shorter so rows sit closer
+  marginLeft: 230,
+  marginRight: 80,
+  marginTop: 40,
+  marginBottom: 50,
+
+  title: "Variation in Policy Alignment by Candidate Awareness", 
+
+  x: {
+    label: "Average alignment (1–5) →",
+    domain: [1, 5],
+    grid: true
+  },
+
+//   y: {
+//   label: null,
+//   domain: awareYDomain,
+//   type: "band",
+//   paddingInner: 0.2,   // more gap between rows
+//   paddingOuter: 0.15,  // a bit of breathing room top/bottom
+//   tickFormat: d =>
+//     d.endsWith("— Aware") ? d.replace(" — Aware", "") : ""
+// },
+
+  // y: {
+  //   label: null,
+  //   domain: awareYDomain,
+  //   type: "band",
+  //   paddingInner: 0.02,   // very small gap between rows
+  //   paddingOuter: 0.15,
+  //   tickFormat: d => d.endsWith("— Aware") ? d.replace(" — Aware", "") : ""
+  // },
+
+  y: {
+  label: null,
+  domain: awareYDomain,
+  type: "band",
+  paddingInner: 0.01,
+  paddingOuter: 0.15,
+
+  // ✅ Only draw ticks for the “Aware” rows
+  ticks: awareYDomain.filter(d => d.endsWith("— Aware")),
+
+  // And show a clean issue name on those ticks
+  tickFormat: d => d.replace(" — Aware", "")
+},
+
+  color: {
+    domain: ["Aware", "Not aware"],
+    range: ["#595959", "#b3b3b3"],
+    label: "Heard of candidate?"
+  },
+
+  marks: [
+    // neutral reference line
+    Plot.ruleX([2.5], {
+      stroke: "#aaaaaa",
+      strokeDasharray: "4,4",
+      opacity: 0.7
+    }),
+
+    // bars from 1 → avg (so they don’t start before the 1 tick)
+    Plot.barX(awareSimple, {
+      x1: 1,
+      x2: "avg",
+      y: "issueAware",
+      fill: "aware",
+      inset: 2,
+      tip: d =>
+        `${d.issue}
+${d.aware}: ${d.avg.toFixed(2)} (1–5)`
+    }),
+
+    // labels to the right of each bar: Aware / Not aware
+    Plot.text(awareSimple, {
+      x: d => d.avg + 0.05,
+      y: "issueAware",
+      text: "aware",
+      fill: "#555555",
+      textAnchor: "start",
+      fontSize: 10
+    })
+  ]
+})}`
+```
+
+<br>
+
+<div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 
 ## Do Campaign Efforts Drive Turnout? A Two-Part Look
 <br>
 
-### GOTV Knocking vs. Turnout
-The first scatterplot compares turnout with the intensity of door knocking, measured as GOTV doors knocked per 1,000 registered voters in each district. While there is a slight upward slope in the regression line, the relationship is weak: districts with extensive door knocking did not consistently achieve higher turnout, and districts with very low GOTV effort sometimes posted some of the highest turnout levels overall. The wide vertical spread of points at nearly every GOTV level indicates that knocking more doors alone was not a reliable predictor of turnout. This suggests that structural district characteristics—such as civic engagement patterns, demographics, or competitiveness—played a larger role in driving turnout than the field program’s door-to-door efforts.
+### *GOTV Knocking vs. Turnout*
+The first scatterplot compares turnout with the intensity of door knocking, measured as GOTV doors knocked per 1,000 registered voters in each district. While there is a slight upward trend, the relationship is weak: districts with extensive door knocking did not consistently achieve higher turnout, and some districts with very little GOTV effort still posted some of the highest turnout levels.
 
-### Candidate Hours vs. Turnout
-The second scatterplot shows a noticeably stronger relationship between candidate hours spent in a district and turnout. Here the regression line slopes upward more clearly, and districts cluster more tightly around that trend. Districts where the candidate spent more time generally saw higher turnout, with several high-engagement districts reaching turnout rates above 70–80%. While this pattern still does not establish causation, it suggests that the candidate’s personal presence may have been more closely aligned with voter mobilization than the GOTV program alone. This could reflect targeted strategy (the campaign may have sent the candidate to areas already likely to turn out) or genuine mobilizing value from direct engagement.
+### *Candidate Hours vs. Turnout*
+The second scatterplot shows a noticeably stronger relationship between candidate hours spent in a district and turnout. Districts where the candidate spent more time generally saw higher turnout, with several high-engagement districts reaching turnout rates above 70–80%. This suggests that the candidate’s personal presence may have been more closely aligned with voter mobilization than the GOTV program alone. 
 </div>
 
 ```js
@@ -788,8 +909,92 @@ html`
 </div>
 `
 ```
+<br>
+
+<div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
+
+## Key Takeaways and Next Steps
+<br>
+This analysis points to a campaign with clear momentum but uneven support across the city. Three themes stand out:
+
+- **Strong policy resonance on childcare, housing and transit.** These issues show the highest levels of agreement in the survey data, suggesting they should remain at the core of the candidate’s message.
+- **Uneven geographic performance by income and district.** Some districts combine strong vote share and turnout, while others lag—particularly in [lower/higher]-income areas where the map shows weaker support.
+- **Mixed reactions to small business tax and police reform.** These topics appear more polarizing or less clearly understood, with a wider spread of responses.
+
+For a future campaign, a targeted strategy that:
+1) doubles down on childcare, housing and transit as signature issues,  
+2) devotes more field time and GOTV resources to underperforming districts, and  
+3) refines messaging around small business tax, and police reform  
+
+will be key to turning today’s baseline support into a more durable winning coalition.
+
+</div>
 
 
+<!-- CODE THAT DIDN'T MAKE IT TO THE POST BUT I'LL KEEP ANYWAY -->
+<!-- ```js
+// 3. Simple INTRO bar chart
+Plot.plot({
+  width: 700,
+  height: 320,
+  marginLeft: 90,
+  marginRight: 40,
+  marginTop: 60,
+  marginBottom: 50,
+
+  title: "Citywide Vote Totals",
+  // subtitle: "Total votes across all NYC districts",
+
+  x: {
+    label: "Total votes →",
+    grid: true,
+    tickFormat: d3.format(",")
+  },
+
+  y: {
+    label: null,
+    domain: ["Candidate", "Opponent"]
+  },
+
+  color: {
+    legend: true,
+    label: "Vote for",
+    domain: ["Candidate", "Opponent"],
+    range: ["#c21a1c", "#4575b4"]  // red for candidate, blue for opponent
+  },
+
+  marks: [
+    // Bars
+    Plot.barX(overallTotals, {
+      x: "votes",
+      y: "group",
+      fill: "group",
+      tip: d =>
+        `${d.group}\nTotal votes: ${d3.format(",")(d.votes)}`
+    }),
+
+    // Optional: labels at end of bars with % share
+    Plot.text(
+      overallTotals.map(d => ({
+        group: d.group,
+        votes: d.votes,
+        label: `${(d.votes / (totalCandidate + totalOpponent) * 100).toFixed(1)}%`
+      })),
+      {
+        x: "votes",
+        y: "group",
+        text: "label",
+        dx: 6,
+        dy: 3,
+        textAnchor: "start",
+        fontWeight: "bold"
+      }
+    ),
+
+    Plot.ruleX([0])
+  ]
+})
+``` -->
 <!-- ```js
 // PLOT 1: Doors knocked vs turnout
 Plot.plot({
@@ -880,24 +1085,4 @@ Plot.plot({
   ]
 })
 ``` -->
-
-
-<div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
-
-## Key Takeaways and Next Steps
-<br>
-This analysis points to a campaign with clear momentum but uneven support across the city. Three themes stand out:
-
-- **Strong policy resonance on housing and transit.** These issues show the highest levels of agreement in the survey data, suggesting they should remain at the core of the candidate’s message.
-- **Uneven geographic performance by income and district.** Some districts combine strong vote share and turnout, while others lag—particularly in [lower/higher]-income areas where the map shows weaker support.
-- **Mixed reactions to childcare, small business tax, and police reform.** These topics appear more polarizing or less clearly understood, with a wider spread of responses.
-
-For a future campaign, a targeted strategy that:
-1) doubles down on housing and transit as signature issues,  
-2) devotes more field time and GOTV resources to underperforming districts, and  
-3) refines messaging around childcare, small business tax, and police reform  
-
-will be key to turning today’s baseline support into a more durable winning coalition.
-
-</div>
 
