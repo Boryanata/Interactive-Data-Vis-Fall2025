@@ -43,7 +43,7 @@ export default {
     },
     {
       name: "Lab 3: Mayoral Mystery",
-      open: true,
+      open: false,
       pages: [
         { name: "Instructions", path: "/lab_3/readme" },
         { name: "Dashboard", path: "/lab_3/index" },
@@ -54,12 +54,19 @@ export default {
     },
     {
       name: "Lab 4: Clearwater Crisis",
-      open: true,
+      open: false,
       pages: [
         { name: "Instructions", path: "/lab_4/readme" },
         { name: "Dashboard", path: "/lab_4/index" },
         { name: "Week 13 Notes", path: "/lab_4/week_13_notes" },
         { name: "Week 13 Class", path: "/lab_4/week_13_class" },
+      ],
+    },
+    {
+      name: "Extra Lessons",
+      open: true,
+      pages: [
+        { name: "Data Art", path: "/extra_lessons/data_art" },
       ],
     }
 
