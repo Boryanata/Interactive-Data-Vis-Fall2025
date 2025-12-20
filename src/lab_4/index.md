@@ -625,7 +625,7 @@ html`<div style="display:flex;gap:0px;align-items:flex-start;margin:20px 0;max-w
 ```js
 const EVIDENCE_CARD = {
   metals: {
-    title: "Heavy metals (Primary, 6/6)",
+    title: "Heavy metals (Primary contributor, 6/6)",
     bullets: [
       "Spatial alignment: ✅ West dominant",
       "Temporal alignment: ✅ exceedances begin early in fish decline window",
