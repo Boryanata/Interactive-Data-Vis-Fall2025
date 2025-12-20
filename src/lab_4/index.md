@@ -631,7 +631,7 @@ const EVIDENCE_CARD = {
       "Temporal alignment: ✅ exceedances begin early in fish decline window",
       "Causal plausibility (trout as sentinel): ✅ strong (direct toxicity)"
     ],
-    next: "Next lead: ChemTech + western inlet timing."
+    next: "Lead: ChemTech + western inlet timing."
   },
   nitrogen: {
     title: "Nitrogen (secondary contributor, 3/6)",
@@ -640,7 +640,7 @@ const EVIDENCE_CARD = {
       "Temporal alignment: ⚠️ seasonal (not worsening)",
       "Causal plausibility: ⚠️ indirect; needs DO collapse (not observed)"
     ],
-    next: "Next lead: Farm runoff as contributing factor."
+    next: "Lead: Farm runoff as contributing factor."
   },
   phosphorus: {
     title: "Phosphorus (secondary contributor, 3/6)",
@@ -649,7 +649,7 @@ const EVIDENCE_CARD = {
       "Temporal alignment: ⚠️ seasonal windows",
       "Causal plausibility: ⚠️ indirect; no sustained DO crisis"
     ],
-    next: "Next lead: Resort + farm as contributors."
+    next: "Lead: Resort + farm as contributors."
   },
   do: {
     title: "Dissolved oxygen (unlikely contributor, ~1/6)",
