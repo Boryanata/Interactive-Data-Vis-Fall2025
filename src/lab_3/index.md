@@ -4,29 +4,6 @@ toc: false
 theme: "cotton"
 ---
 
-<!-- ```js
-```html
-<style>
-/* Expand the main notebook column */
-.observablehq {
-  max-width: 1200px !important;
-}
-
-/* Expand markdown cells inside the column */
-.observablehq .cell.markdown {
-  max-width: 1100px !important;
-}
-
-/* Optional: Add comfortable line length */
-.wide-text {
-  max-width: 1100px;
-  margin: 1rem 0 1.5rem 1rem;
-  font-size: 1.05rem;
-  line-height: 1.45;
-}
-</style>
-``` -->
-
 
 ```js
 html`<style>
@@ -105,6 +82,7 @@ const marginPoints = (candidateShare - opponentShare) * 100;
 const fmtPercent = d3.format(".1f"); // e.g. 56.2
 const fmtNumber  = d3.format(",");   // e.g. 412,345
 ```
+
 
 <div style="max-width: 820px; margin: 1rem 0 1.5rem 1rem; font-size: 1.05rem; line-height: 1.45;">
 

@@ -37,6 +37,7 @@ Lake Clearwater was once a thriving recreational lake, supporting diverse fish p
 <br>
 
 ## 1. Fish In Trouble
+<br>
 
 Fish populations at Lake Clearwater have declined over the past two years, but not all species appear to be affected in the same way. To understand whether the collapse reflects a uniform lake-wide disturbance or something more selective, it is useful to compare trends across species with different ecological sensitivities.
 
@@ -173,6 +174,8 @@ html`<div style="background:white;border:1px solid #e0e0e0;border-radius:12px;pa
 <br><br>
 
 ## 2. Are Declines Spatially Concentrated?
+<br>
+
 The species-level declines observed above raise an additional question: whether fish population losses are evenly distributed around Lake Clearwater or concentrated in specific locations. To explore this, fish population changes are examined by monitoring station, allowing for direct comparison of spatial patterns across species.
 
 The chart below shows the percent decline in fish populations from 2023 to 2024 by station and species.
@@ -383,6 +386,7 @@ declineByStationSpecies.slice(0, 5)
 
 ## 3. Water Turning Hostile
 
+<br>
 
 The spatial concentration of fish declines raises a critical question: whether environmental stressors are similarly concentrated in the same areas of the lake. To investigate this, water quality measurements are examined across multiple parameters, each of which could plausibly contribute to ecological decline.
 
@@ -674,7 +678,7 @@ Each stressor is evaluated using a simple plausibility framework, scored on a 0â
 
 This framework does not establish causation, but it provides a structured way to compare competing explanations and narrow the field of likely contributors.
 
-<br>
+<br><br>
 
 ## 4. Weighing the Evidence Across Stressors
 <br>
@@ -699,7 +703,7 @@ Without evidence of sustained eutrophication or associated oxygen collapse, phos
 Dissolved oxygen levels remain above critical thresholds across most stations, including the west. While minor fluctuations occur, there is no evidence of sustained hypoxic conditions coinciding with trout decline.
 Given the absence of both spatial and temporal alignment, low dissolved oxygen serves primarily as a negative findingâ€”helpful in ruling out hypoxia as the main mechanism behind the collapse.
 
-<br>
+<br><br>
 
 ## 5. Final Verdict
 <br><br>
