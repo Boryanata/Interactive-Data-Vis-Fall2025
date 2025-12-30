@@ -37,7 +37,6 @@ Lake Clearwater was once a thriving recreational lake, supporting diverse fish p
 <br>
 
 ## 1. Fish In Trouble
-<br>
 
 Fish populations at Lake Clearwater have declined over the past two years, but not all species appear to be affected in the same way. To understand whether the collapse reflects a uniform lake-wide disturbance or something more selective, it is useful to compare trends across species with different ecological sensitivities.
 
@@ -171,10 +170,9 @@ html`<div style="background:white;border:1px solid #e0e0e0;border-radius:12px;pa
 </div>`
 ```
 
-<br><br>
+<br>
 
 ## 2. Are Declines Spatially Concentrated?
-<br>
 
 The species-level declines observed above raise an additional question: whether fish population losses are evenly distributed around Lake Clearwater or concentrated in specific locations. To explore this, fish population changes are examined by monitoring station, allowing for direct comparison of spatial patterns across species.
 
@@ -384,9 +382,222 @@ declineByStationSpecies.slice(0, 5)
 ``` -->
 <br><br>
 
-## 3. Water Turning Hostile
+
+## 3. Temporal Alignment: ChemTech Activities On the Western Shore and Heavy Metal Spikes
+
+To establish a causal link, we examine whether ChemTech's documented activities on the western shore coincide with or precede heavy metal concentration spikes. If industrial operations are driving the contamination, we would expect to see metal levels rise following maintenance shutdowns, process changes, or other operational events.
+
+```js
+// Prepare heavy metals data for West station (closest to ChemTech)
+const westMetals = water
+  .map(d => ({
+    date: new Date(d.date),
+    station: d.station_id,
+    heavy_metals_ppb: +d.heavy_metals_ppb
+  }))
+  .filter(d =>
+    d.station === "West" &&
+    d.date instanceof Date &&
+    !Number.isNaN(+d.date) &&
+    Number.isFinite(d.heavy_metals_ppb)
+  );
+
+// Aggregate to daily maximum (captures peak exposures)
+const dailyMetalsMap = new Map();
+
+for (const d of westMetals) {
+  const dayKey = d.date.toDateString();
+  const key = dayKey;
+  const date = new Date(d.date.getFullYear(), d.date.getMonth(), d.date.getDate());
+
+  if (!dailyMetalsMap.has(key)) {
+    dailyMetalsMap.set(key, {
+      date,
+      heavy_metals_ppb: d.heavy_metals_ppb
+    });
+  } else {
+    const cur = dailyMetalsMap.get(key);
+    if (d.heavy_metals_ppb > cur.heavy_metals_ppb) {
+      cur.heavy_metals_ppb = d.heavy_metals_ppb;
+    }
+  }
+}
+
+const dailyMetalsWest = Array.from(dailyMetalsMap.values())
+  .sort((a, b) => a.date - b.date);
+
+// Prepare ChemTech activities
+const chemtechActivities = activities
+  .map(d => ({
+    date: new Date(d.date),
+    suspect: d.suspect,
+    activity_type: d.activity_type,
+    intensity: d.intensity,
+    duration_days: +d.duration_days,
+    notes: d.notes
+  }))
+  .filter(d =>
+    d.suspect === "ChemTech Manufacturing" &&
+    d.date instanceof Date &&
+    !Number.isNaN(+d.date)
+  )
+  .sort((a, b) => a.date - b.date);
+
+// Create activity date ranges for shaded regions
+const activityRanges = chemtechActivities.map(d => ({
+  date: d.date,
+  dateEnd: new Date(d.date.getTime() + (d.duration_days * 24 * 60 * 60 * 1000)),
+  activity_type: d.activity_type,
+  intensity: d.intensity,
+  notes: d.notes
+}));
+
+const xMinMetals = new Date(2023, 0, 1);
+const xMaxMetals = d3.max(dailyMetalsWest, d => d.date) ?? new Date(2023, 11, 31);
+const metalsYMax = d3.max(dailyMetalsWest, d => d.heavy_metals_ppb) ?? 0;
+const METALS_CONCERN = 20;
+const METALS_LIMIT = 30;
+```
+
+```js
+Plot.plot({
+  width: 900,
+  height: 400,
+  marginLeft: 80,
+  marginRight: 40,
+  marginTop: 50,
+  marginBottom: 45,
+
+  title: "Heavy Metal Levels at West Station vs. ChemTech Activities",
+  subtitle: "Daily maximum concentrations with activity periods overlaid",
+
+  x: {
+    type: "time",
+    domain: [xMinMetals, xMaxMetals],
+    ticks: d3.timeMonth.every(3),
+    tickFormat: d3.timeFormat("%b %Y"),
+    label: "Date"
+  },
+
+  y: {
+    label: "↑ Heavy metals (ppb)",
+    grid: true,
+    domain: [0, Math.max(metalsYMax, METALS_LIMIT)]
+  },
+
+  color: {
+    domain: ["Low", "Medium", "High"],
+    range: ["#fee5d9", "#fcae91", "#de2d26"],
+    legend: true,
+    label: "Activity Intensity"
+  },
+
+  marks: [
+    // Concern and limit thresholds
+    Plot.ruleY([METALS_CONCERN], {
+      stroke: "orange",
+      strokeDasharray: "4,4",
+      strokeWidth: 1.5,
+      strokeOpacity: 0.6
+    }),
+    Plot.ruleY([METALS_LIMIT], {
+      stroke: "red",
+      strokeDasharray: "4,4",
+      strokeWidth: 1.6,
+      strokeOpacity: 0.8
+    }),
+
+    // Shaded regions for activity periods
+    Plot.rect(activityRanges, {
+      x1: "date",
+      x2: "dateEnd",
+      y1: 0,
+      y2: d => Math.max(metalsYMax, METALS_LIMIT),
+      fill: "intensity",
+      fillOpacity: 0.15,
+      tip: {
+        channels: {
+          Activity: "activity_type",
+          Start: d => d3.timeFormat("%b %d, %Y")(d.date),
+          End: d => d3.timeFormat("%b %d, %Y")(d.dateEnd),
+          Intensity: "intensity",
+          Notes: "notes"
+        },
+        format: { x: false, y: false }
+      }
+    }),
+
+    // Vertical lines at activity start dates
+    Plot.ruleX(chemtechActivities, {
+      x: "date",
+      stroke: "intensity",
+      strokeWidth: 2,
+      strokeOpacity: 0.6,
+      tip: {
+        channels: {
+          Activity: "activity_type",
+          Date: d => d3.timeFormat("%b %d, %Y")(d.date),
+          Intensity: "intensity",
+          Duration: d => `${d.duration_days} days`,
+          Notes: "notes"
+        },
+        format: { x: false, y: false }
+      }
+    }),
+
+    // Main line: heavy metal levels
+    Plot.areaY(dailyMetalsWest, {
+      x: "date",
+      y: "heavy_metals_ppb",
+      y1: 0,
+      fill: "#A8E6A8",
+      fillOpacity: 0.2
+    }),
+
+    Plot.lineY(dailyMetalsWest, {
+      x: "date",
+      y: "heavy_metals_ppb",
+      stroke: "black",
+      strokeWidth: 2.5
+    }),
+
+    // Highlight exceedances
+    Plot.dot(
+      dailyMetalsWest.filter(d => d.heavy_metals_ppb >= METALS_CONCERN),
+      {
+        x: "date",
+        y: "heavy_metals_ppb",
+        r: 4,
+        fill: "red",
+        stroke: "white",
+        strokeWidth: 1,
+        tip: {
+          channels: {
+            Date: d => d3.timeFormat("%b %d, %Y")(d.date),
+            "Heavy metals (ppb)": d => d.heavy_metals_ppb
+          },
+          format: { x: false, y: false }
+        }
+      }
+    )
+  ]
+})
+```
+
+### Key Observations
+
+The temporal alignment between ChemTech activities and heavy metal spikes provides strong evidence for causation. Key patterns include:
+
+- **Activity-spike correlation**: Major metal concentration spikes frequently occur during or immediately following documented ChemTech activities, particularly maintenance shutdowns and process changes.
+- **Timing precision**: The alignment is not merely coincidental—spikes consistently appear within days or weeks of activity dates, suggesting direct operational impacts.
+- **Intensity relationship**: Higher-intensity activities (marked in darker red) tend to coincide with larger metal concentration increases.
+- **Sustained elevations**: During extended activity periods, metal levels remain elevated, indicating ongoing discharge rather than isolated events.
+
+This temporal pattern, combined with the spatial concentration at the western station, strengthens the case that ChemTech's industrial operations are the primary source of heavy metal contamination driving the ecological collapse.
 
 <br>
+
+## 4. Water Turning Hostile
 
 The spatial concentration of fish declines raises a critical question: whether environmental stressors are similarly concentrated in the same areas of the lake. To investigate this, water quality measurements are examined across multiple parameters, each of which could plausibly contribute to ecological decline.
 
@@ -413,7 +624,6 @@ The dropdown below allows exploration of four candidate stressors—heavy metals
 ```js
 import {html} from "htl";
 ```
-
 
 
 ```js
@@ -666,7 +876,6 @@ const EVIDENCE_CARD = {
 EVIDENCE_CARD
 ```
 
-<br>
 
 ### How to read the evidence
 Each stressor is evaluated using a simple plausibility framework, scored on a 0–6 scale based on three criteria:
@@ -678,9 +887,9 @@ Each stressor is evaluated using a simple plausibility framework, scored on a 0�
 
 This framework does not establish causation, but it provides a structured way to compare competing explanations and narrow the field of likely contributors.
 
-<br><br>
+<br>
 
-## 4. Weighing the Evidence Across Stressors
+<!-- ## 5. Weighing the Evidence Across Stressors
 <br>
 
 **Heavy metals: strongest overall alignment (6/6)**
@@ -701,12 +910,148 @@ Without evidence of sustained eutrophication or associated oxygen collapse, phos
 **Dissolved oxygen: unlikely primary driver (~1/6)**
 
 Dissolved oxygen levels remain above critical thresholds across most stations, including the west. While minor fluctuations occur, there is no evidence of sustained hypoxic conditions coinciding with trout decline.
-Given the absence of both spatial and temporal alignment, low dissolved oxygen serves primarily as a negative finding—helpful in ruling out hypoxia as the main mechanism behind the collapse.
+Given the absence of both spatial and temporal alignment, low dissolved oxygen serves primarily as a negative finding—helpful in ruling out hypoxia as the main mechanism behind the collapse. -->
 
-<br><br>
 
-## 5. Final Verdict
-<br><br>
+## 5. Suspect Comparison Matrix
+
+To systematically evaluate all four suspects, we compare them across three key criteria: spatial alignment (does their location match where fish decline is most severe?), temporal alignment (do their activities coincide with the timing of decline?), and causal plausibility (is there a direct, well-established mechanism linking their operations to fish mortality?).
+
+Each suspect is scored on a 0-2 scale for each criterion, with a maximum total score of 6. This framework helps distinguish between primary drivers, secondary contributors, and unlikely causes.
+
+```js
+// Suspect comparison data
+const suspectComparison = [
+  {
+    suspect: "ChemTech Manufacturing",
+    location: "Western shore",
+    spatial: 2,
+    temporal: 2,
+    causal: 2,
+    total: 6,
+    notes: "Strong alignment on all dimensions; heavy metals directly toxic to sensitive species"
+  },
+  {
+    suspect: "Riverside Farm",
+    location: "Northern shore",
+    spatial: 0.5,
+    temporal: 1,
+    causal: 1.5,
+    total: 3,
+    notes: "Nitrogen/phosphorus runoff; indirect mechanism, spatial mismatch with decline epicenter"
+  },
+  {
+    suspect: "Lakeview Resort",
+    location: "Eastern shore",
+    spatial: 0.5,
+    temporal: 1,
+    causal: 1.5,
+    total: 3,
+    notes: "Phosphorus spikes; indirect mechanism, episodic patterns don't match decline timeline"
+  },
+  {
+    suspect: "Clearwater Fishing Lodge",
+    location: "Southern shore",
+    spatial: 0,
+    temporal: 0.5,
+    causal: 0.5,
+    total: 1,
+    notes: "Overfishing would affect all stations uniformly; no spatial concentration observed"
+  }
+];
+
+// Prepare data for heatmap (long format)
+const heatmapData = suspectComparison.flatMap(d => [
+  { suspect: d.suspect, criterion: "Spatial Alignment", score: d.spatial, total: d.total },
+  { suspect: d.suspect, criterion: "Temporal Alignment", score: d.temporal, total: d.total },
+  { suspect: d.suspect, criterion: "Causal Plausibility", score: d.causal, total: d.total },
+  { suspect: d.suspect, criterion: "Overall Score", score: d.total, total: d.total }
+]);
+
+const suspectOrder = suspectComparison.map(d => d.suspect);
+const criterionOrder = ["Spatial Alignment", "Temporal Alignment", "Causal Plausibility", "Overall Score"];
+```
+
+```js
+Plot.plot({
+  width: 800,
+  height: 300,
+  marginLeft: 180,
+  marginRight: 40,
+  marginTop: 50,
+  marginBottom: 50,
+
+  title: "Suspect Evaluation Matrix",
+  subtitle: "Evidence strength across key criteria (0-2 per criterion, 6 maximum total)",
+
+  x: {
+    domain: criterionOrder,
+    label: null,
+    axis: "top"
+  },
+
+  y: {
+    domain: suspectOrder,
+    label: null
+  },
+
+  color: {
+    type: "linear",
+    scheme: "RdYlGn",
+    domain: [0, 2],
+    label: "Evidence strength (Green = strong evidence for suspect responsibility)",
+    legend: true,
+    width: 300
+  },
+
+  marks: [
+    // Heatmap cells
+    Plot.cell(heatmapData, {
+      x: "criterion",
+      y: "suspect",
+      fill: d => d.criterion === "Overall Score" ? d.score / 3 : d.score,
+      stroke: "#333",
+      strokeWidth: 1.5,
+      tip: {
+        channels: {
+          Suspect: "suspect",
+          Criterion: "criterion",
+          Score: d => d.criterion === "Overall Score" ? `${d.score.toFixed(1)}/6` : `${d.score.toFixed(1)}/2`,
+          "Total Score": d => d.total.toFixed(1)
+        },
+        format: { x: false, y: false, fill: false }
+      }
+    }),
+
+    // Score labels in cells
+    Plot.text(heatmapData, {
+      x: "criterion",
+      y: "suspect",
+      text: d => d.criterion === "Overall Score" ? d.score.toFixed(1) : d.score.toFixed(1),
+      fill: d => (d.criterion === "Overall Score" ? d.score / 3 : d.score) < 1 ? "white" : "#333",
+      fontSize: 13,
+      fontWeight: "bold"
+    })
+  ]
+})
+```
+
+### Key Findings
+
+The comparison matrix reveals a clear hierarchy of evidence, with ChemTech Manufacturing emerging as the primary suspect based on the weight of evidence:
+
+- **ChemTech Manufacturing (6/6) — Primary Suspect**: The evidence points decisively to ChemTech as the primary driver of the ecological collapse. With a perfect score across all three criteria, ChemTech is the only suspect that demonstrates strong spatial alignment (located at the western shore where fish decline is most severe), strong temporal alignment (documented activities coincide with heavy metal spikes and fish decline timing), and strong causal plausibility (direct toxicological mechanism affecting sensitive species like trout). This convergence of evidence across all dimensions distinguishes ChemTech from all other suspects and establishes it as the most likely primary cause.
+
+- **Riverside Farm & Lakeview Resort (3/6 each) — Secondary Contributors**: Moderate scores reflect secondary contributions rather than primary drivers. Both show some temporal and causal plausibility through nutrient runoff, but critical gaps exist: spatial misalignment (northern/eastern stations vs. western decline epicenter) and indirect mechanisms that require additional conditions not observed in the data. These limitations prevent them from being primary drivers.
+
+- **Clearwater Fishing Lodge (1/6) — Unlikely Contributor**: Weak evidence across all dimensions. Overfishing would be expected to affect all stations uniformly, but the observed pattern shows concentrated decline at the western station, inconsistent with recreational fishing pressure. The evidence does not support this suspect as a significant contributor.
+
+The systematic comparison demonstrates that ChemTech Manufacturing is the only suspect with strong evidence across all three evaluation criteria, making it the clear primary suspect based on the weight of evidence. Other suspects play secondary or negligible roles.
+
+<br>
+
+## 6. Final Verdict
+
 The evidence converges on a single, compelling explanation: Lake Clearwater’s ecological collapse is being driven by a localized environmental stressor concentrated near the western station. Across all analyses, this area consistently emerges as the epicenter of biological decline, with trout populations—an established sentinel species—showing the most severe and earliest losses.
 Among the water quality parameters examined, heavy metals stand apart. They are the only stressor that aligns simultaneously with the location of greatest fish decline, the timing of population collapse, and a direct, well-established toxic mechanism. Heavy metal concentrations are consistently highest near the western inlet and begin rising early in the decline window, setting them apart from all other stressors examined.
 
