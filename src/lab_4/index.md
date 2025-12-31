@@ -835,7 +835,7 @@ html`<div style="display:flex;gap:0px;align-items:flex-start;margin:20px 0;max-w
 ```js
 const EVIDENCE_CARD = {
   metals: {
-    title: "Heavy metals (Primary contributor, 6/6)",
+    title: "Heavy metals (Primary contributor)",
     bullets: [
       "Spatial alignment: ✅ West dominant",
       "Temporal alignment: ✅ exceedances begin early in fish decline window",
@@ -844,7 +844,7 @@ const EVIDENCE_CARD = {
     next: "Lead: ChemTech + western inlet timing."
   },
   nitrogen: {
-    title: "Nitrogen (secondary contributor, 3/6)",
+    title: "Nitrogen (secondary contributor)",
     bullets: [
       "Spatial alignment: ⚠️ North",
       "Temporal alignment: ⚠️ seasonal (not worsening)",
@@ -853,7 +853,7 @@ const EVIDENCE_CARD = {
     next: "Lead: Farm runoff as contributing factor."
   },
   phosphorus: {
-    title: "Phosphorus (secondary contributor, 3/6)",
+    title: "Phosphorus (secondary contributor)",
     bullets: [
       "Spatial alignment: ⚠️ episodic at East (May–Jun, Oct–Nov) + North (Apr, Sep)",
       "Temporal alignment: ⚠️ seasonal windows",
@@ -862,7 +862,7 @@ const EVIDENCE_CARD = {
     next: "Lead: Resort + farm as contributors."
   },
   do: {
-    title: "Dissolved oxygen (unlikely contributor, ~1/6)",
+    title: "Dissolved oxygen (unlikely contributor)",
     bullets: [
       "Spatial alignment: ❌",
       "Temporal alignment: ❌",
@@ -919,8 +919,14 @@ To systematically evaluate all four suspects, we compare them across three key c
 
 Each suspect is scored on a 0-2 scale for each criterion, with a maximum total score of 6. This framework helps distinguish between primary drivers, secondary contributors, and unlikely causes.
 
+**Note on scoring methodology:** The scores presented below are interpretive, derived from the patterns and evidence shown in the visualizations throughout this dashboard. They synthesize the spatial, temporal, and causal evidence patterns observed in the data—including fish decline patterns, water quality measurements, and suspect activity timelines—into a comparable quantitative framework. These scores are not directly computed from the raw CSV files, but rather represent a systematic evaluation of the evidence strength for each suspect based on the patterns revealed through the data analysis.
+
 ```js
 // Suspect comparison data
+// Scores are interpretive, based on evidence patterns from visualizations:
+// - Spatial alignment: location relative to decline epicenter (West station)
+// - Temporal alignment: activity timing relative to fish decline and water quality changes
+// - Causal plausibility: directness and strength of mechanism linking operations to fish mortality
 const suspectComparison = [
   {
     suspect: "ChemTech Manufacturing",
@@ -1041,10 +1047,19 @@ Plot.plot({
 The comparison matrix reveals a clear hierarchy of evidence, with ChemTech Manufacturing emerging as the primary suspect based on the weight of evidence:
 
 - **ChemTech Manufacturing (6/6) — Primary Suspect**: The evidence points decisively to ChemTech as the primary driver of the ecological collapse. With a perfect score across all three criteria, ChemTech is the only suspect that demonstrates strong spatial alignment (located at the western shore where fish decline is most severe), strong temporal alignment (documented activities coincide with heavy metal spikes and fish decline timing), and strong causal plausibility (direct toxicological mechanism affecting sensitive species like trout). This convergence of evidence across all dimensions distinguishes ChemTech from all other suspects and establishes it as the most likely primary cause.
+  - *Spatial (2/2)*: Located at western shore where decline is most severe; West station shows 40-45% trout decline
+  - *Temporal (2/2)*: Activities coincide with heavy metal spikes; maintenance shutdowns align with concentration increases
+  - *Causal (2/2)*: Direct toxic mechanism; heavy metals directly toxic to sensitive species like trout
 
 - **Riverside Farm & Lakeview Resort (3/6 each) — Secondary Contributors**: Moderate scores reflect secondary contributions rather than primary drivers. Both show some temporal and causal plausibility through nutrient runoff, but critical gaps exist: spatial misalignment (northern/eastern stations vs. western decline epicenter) and indirect mechanisms that require additional conditions not observed in the data. These limitations prevent them from being primary drivers.
+  - *Spatial (0.5/2)*: Farm at northern shore, Resort at eastern shore; decline epicenter is western station
+  - *Temporal (1/2)*: Seasonal patterns (fertilizer application, episodic phosphorus) but don't match sustained decline timeline
+  - *Causal (1.5/2)*: Indirect mechanism (nutrients → algae → DO depletion), but DO crisis not observed at West station
 
 - **Clearwater Fishing Lodge (1/6) — Unlikely Contributor**: Weak evidence across all dimensions. Overfishing would be expected to affect all stations uniformly, but the observed pattern shows concentrated decline at the western station, inconsistent with recreational fishing pressure. The evidence does not support this suspect as a significant contributor.
+  - *Spatial (0/2)*: No spatial concentration; overfishing would affect all stations uniformly
+  - *Temporal (0.5/2)*: Opened in Jan 2023, but overfishing would be gradual, not concentrated in time
+  - *Causal (0.5/2)*: Overfishing mechanism plausible, but doesn't explain spatial concentration or species-specific patterns
 
 The systematic comparison demonstrates that ChemTech Manufacturing is the only suspect with strong evidence across all three evaluation criteria, making it the clear primary suspect based on the weight of evidence. Other suspects play secondary or negligible roles.
 
